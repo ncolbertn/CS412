@@ -18,7 +18,7 @@ def quote(request):
     defined lists and passes them through into the context
     dictionary.
     '''
-    template_name = 'quote.html'
+    template_name = 'quotes/quote.html'
     context = {
         "quote" : random.choice(quotes),
         "image" : random.choice(images),
@@ -30,7 +30,7 @@ def show_all(request):
     Handles quotes/show_all, uses as context the full list of
     quotes and images which are looped through in the template.
     '''
-    template_name = 'show_all.html'
+    template_name = 'quotes/show_all.html'
     context = {
         "quotes" : quotes,
         "images" : images,
@@ -42,6 +42,6 @@ def about(request):
     '''
     Handles quotes/about.
     '''
-    template_name = 'about.html'
+    template_name = 'quotes/about.html'
 
     return render(request, template_name)
