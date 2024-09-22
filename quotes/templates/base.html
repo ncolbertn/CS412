@@ -2,10 +2,16 @@
 <html>
     <head>
         <title>Quote of the Day</title>
-        <link rel="stylesheet" href="https://cs-people.bu.edu/colbertn/styles3.css">
+        <!-- <link rel="stylesheet" href="https://cs-people.bu.edu/colbertn/styles2.css"> -->
+         <link rel="stylesheet" href="{% static 'styles2.css' %}"> 
+
     </head>
 
     <body>
+            <header>
+                <h1> Morrissey Quote of the Day</h1>
+            </header>
+        </div>
         <nav>
             <ul>
                 <li><a href="{% url 'quote' %}">Home</a></li>
@@ -17,7 +23,6 @@
         {% block content %}
 
         {% endblock %}
-
         <hr>
     </body>
 </html>
