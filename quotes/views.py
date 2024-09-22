@@ -13,6 +13,11 @@ images = ["https://consequence.net/wp-content/uploads/2022/12/Morrissey.jpeg?qua
         "https://i.guim.co.uk/img/media/fd8a1d46c44e0758750dcda940f76dbf7698191c/0_0_3895_5970/master/3895.jpg?width=465&dpr=1&s=none"]
 
 def quote(request):
+    '''
+    The homepage, parses a random selection from the 
+    defined lists and passes them through into the context
+    dictionary.
+    '''
     template_name = 'quote.html'
     context = {
         "quote" : random.choice(quotes),
@@ -21,6 +26,10 @@ def quote(request):
     return render(request, template_name, context)
 
 def show_all(request):
+    '''
+    Handles quotes/show_all, uses as context the full list of
+    quotes and images which are looped through in the template.
+    '''
     template_name = 'show_all.html'
     context = {
         "quotes" : quotes,
@@ -31,11 +40,8 @@ def show_all(request):
 
 def about(request):
     '''
-    Function to handle the URL request for /hw/about (about page).
-    Delegate rendering to the template hw/about.html.
+    Handles quotes/about.
     '''
-    # use this template to render the response
     template_name = 'about.html'
 
-    # delegate rendering work to the template
     return render(request, template_name)
