@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <p>The following are a collection of Morrissey quotes sourced from letters to his pen pals throughout the 80s.</p>
+</div>
+<div>
+    <table>
+        {% for quote in quotes %}
+        <tr>
+            <th>{{quote}}</th>
+        </tr>
+        {% endfor %}
+    
+        {% for image in images %}
+        <tr>
+            <th><img src={{image}} alt="morrissey pic" style="width:200px;"></th>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
