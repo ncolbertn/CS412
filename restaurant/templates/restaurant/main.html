@@ -1,0 +1,27 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+
+<div>
+    <p class="center" style="text-align: center;">123 Main Street, Anywhere, USA 01234</p>
+</div>
+<div>
+    <p>Hours of Operation:</p>
+    <ul>
+        <li> Mon-Thu: 10AM-9PM</li>
+        <li> Fri & Sat: 10AM-11PM</li>
+        <li> Sun: CLOSED</li>
+    </ul>
+</div>
+<div>
+    {% if isClosed == False %}
+    <p class="center" style="text-align: center;">We are <h3 class="center" style="text-align: center;">OPEN</h3></p>
+    {% else %}
+    <p class="center" style="text-align: center;">We are <h3 class="center" style="text-align: center;">CLOSED</h3></p>
+    {% endif %}
+</div>
+<div>
+    <img src="https://png.pngtree.com/png-vector/20220622/ourmid/pngtree-italian-chef-with-a-mustache-holding-a-delicious-pizza-png-image_5257841.png" alt="italian chef" class="center">
+</div>
+
+{% endblock %}

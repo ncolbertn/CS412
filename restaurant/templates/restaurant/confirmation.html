@@ -1,0 +1,36 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+<div>
+    <h2 class="center" style="text-align: center;">Ordered Items</h2>
+    {% for key, value in orderedItems.items %}
+        <p class="center" style="text-align: center;">{{key}}</p>
+    {% endfor %}
+</div>
+<div>
+    <h2 class="center" style="text-align: center;">Total</h2>
+    <p class="center" style="text-align: center;">${{total}}</p>
+</div>
+
+<div>
+    <h2 class="center" style="text-align: center;">Order Instructions</h2>
+    <p class="center" style="text-align: center;">{{special_instructions}}</p>
+</div>
+
+<div></div>
+    <h2 class="center" style="text-align: center;">Your order will be ready at</h2>
+    <p class="center" style="text-align: center;">{{readyTime}}</p>
+</div>
+
+<div>
+    <h2 class="center" style="text-align: center;">Customer Info</h2>
+    <p class="center" style="text-align: center;">{{name}}</p>
+    <p class="center" style="text-align: center;">{{phone}}</p>
+    <p class="center" style="text-align: center;">{{email}}</p>
+</div>
+
+
+
+
+
+{% endblock %}

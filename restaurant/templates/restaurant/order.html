@@ -1,0 +1,24 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+    <form action="{% url 'confirmation' %}" method="POST">
+        {% csrf_token %}
+        {% for item, price in menuItems.items %}
+        <div><input type="checkbox" name="orderItems" value="{{item}}">{{item}} ${{price}}</div>
+        {% endfor %}
+        <p>Our Special of the Day!</p>
+        <div><input type="checkbox" name="special" value="{{specialotditem}}">{{specialotditem}} ${{specialotdprice}}</div>
+        <p>
+            Order Instructions
+        </p>
+        <div><textarea name="special_instructions" rows="3" cols="60"></textarea></div>
+        <p>
+            Customer Information
+        </p>
+        <div>Name:</div> <div><input name="name"></div>
+        <div>Phone:</div> <div><input name="phone"></div>
+        <div>Email:</div> <div><input name="email"></div>
+        <input type="submit">  
+    </form>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% load static %}
+<html>
+    <head>
+        <title>Luigi's Linguini Factorini</title>
+        <link rel="stylesheet" href="https://cs-people.bu.edu/colbertn/styles2.css">
+         <!-- <link rel="stylesheet" href="{% static 'styles2.css' %}">  -->
+
+    </head>
+
+    <body>
+            <header>
+                <h1> Luigi's Linguini Factorini</h1>
+            </header>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'main' %}">Home</a></li>
+                <li><a href="{% url 'order' %}">Place Order</a></li>
+            </ul>
+        </nav>
+
+        {% block content %}
+
+        {% endblock %}
+        <hr>
+    </body>
+</html>
