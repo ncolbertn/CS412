@@ -21,6 +21,10 @@ specialItems = {
 }
 
 def main(request):
+    '''
+    renders the homepage. only dynamic variable is checking if the
+    restaurant is open at given time.
+    '''
     
     template_name = 'restaurant/main.html'
     
@@ -30,10 +34,13 @@ def main(request):
     return render(request, template_name, context)
 
 def order(request):
+    '''
+    renders the order page, passes a random item from the list of specials
+    as the special of the day (even though it changes every refresh shh)
+    '''
 
     template_name = 'restaurant/order.html'
     specialotd = random.choice(list(specialItems.items()))
-    print(specialotd)
     context = {
         'menuItems' : items,
         'specialotditem' : specialotd[0],
@@ -43,27 +50,25 @@ def order(request):
 
 
 def confirmation(request):
-    ''''''
-    print("in confirmation")
+    '''
+    the most complicated method in the app, confirmation must 
+    take the POST request and repackage the variables for display 
+    on the page.
+    '''
     if request.POST:
         template_name = 'restaurant/confirmation.html'
         orderedItems = request.POST.getlist('orderItems')
-        print(orderedItems)
         orderItemsDict = {choice: items[choice] for choice in orderedItems}
-        print(orderItemsDict)
         total = 0
         for item in orderItemsDict:
             total += orderItemsDict[item]
-            print("the total before special is: " + str(total))
         if 'special' in  request.POST:
             total += specialItems[request.POST['special']]
-            print("total after special " + str(total))
             # this stupid line is i guess a Pythonic method of appending
             # to the ordered items dict another entry with the key of the
             # special and a lookup to the original dict for the price.
             # practically unreadable? yeah. Functioning? I hope.
             orderItemsDict[request.POST['special']] = specialItems[request.POST['special']]
-            print(orderItemsDict) 
         name = request.POST['name']
         phone = request.POST['phone']
         email = request.POST['email']
@@ -78,12 +83,16 @@ def confirmation(request):
             'readyTime' : readyTime,
             'special_instructions' : special_instructions,
         }
-        print(context)
         return render(request, template_name, context)
     else:
         return redirect("order")
     
 def isClosed():
+    '''
+    Method to check if the current day/time is within range of the
+    restaurant's opening hours. Unintuitively returns True when closed
+    and False when open. 
+    '''
     currTime = datetime.now().time()
     weekday = datetime.now().weekday()
     if weekday in range(0,4):
