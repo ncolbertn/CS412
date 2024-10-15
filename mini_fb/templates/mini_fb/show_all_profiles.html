@@ -9,11 +9,13 @@
 
     {% for a in profiles %}
     <profile>
-
-        <img src="{{a.pfp}}" alt="{{a.pfp}}">
-
+        <a href="{% url 'profile' a.pk %}">
+        <img src="{{a.pfp}}" alt="{{a.pfp}}" style="object-fit: cover; width: 400px; height: 400px;">
+        </a>
         <div> 
+            <a href="{% url 'profile' a.pk %}">
             <h2>{{a.first_name}} {{a.surname}}</h2>
+            </a>
             <p>from {{a.city}}</p>
 
             <p>

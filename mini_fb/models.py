@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Profile(models.Model):
     ''''''
@@ -14,3 +15,17 @@ class Profile(models.Model):
         ''''''
 
         return f'{self.first_name} {self.surname}'
+    def get_status_message(self):
+        message = StatusMessage.objects.filter(profile=self).order_by("timestamp")
+        return message
+    
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'pk':self.pk})
+    
+class StatusMessage(models.Model):
+    timestamp = models.DateTimeField(auto_now=True)
+    message = models.TextField(blank=False)
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.message}'
