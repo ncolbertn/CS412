@@ -29,3 +29,16 @@ class StatusMessage(models.Model):
 
     def __str__(self):
         return f'{self.message}'
+    
+    def get_images(self):
+        images = StatusMessageImage.objects.filter(status_message=self).order_by("timestamp")
+        return images
+    
+class StatusMessageImage(models.Model):
+    timestamp = models.DateTimeField(auto_now=True)
+    image_file = models.ImageField(blank=True)
+    status_message = models.ForeignKey("StatusMessage", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.image_file}'
+    

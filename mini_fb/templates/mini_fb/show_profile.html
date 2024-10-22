@@ -16,9 +16,23 @@
         {% for s in profile.get_status_message %}
             <div>
                 <strong>{{s.message}}</strong>
+                <div>
+                    {% if s.get_images %}
+                        {% for img in s.get_images %}
+                            <img src='{{img.image_file.url}}' alt='{{img.image_file.url}}' style="width: 100px;">
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
                 <p>
                     {{s.timestamp}}
                 </p>
+                <div>
+                    <p>
+                        <a href="{% url 'delete_status' s.pk %}"> Delete</a>
+                        <a href="{% url 'update_status' s.pk %}"> Update</a>
+                    </p>
+                </div>
             </div>
         {% endfor %}
     {% endif %}
@@ -27,6 +41,11 @@
     <h4>
         <a href="{% url 'create_status' profile.pk %}">
         Create a Status Message</a>
+    </h4>
+    <h4>
+        <a href="{% url 'update_profile' profile.pk %}">
+            Update this profile
+        </a>
     </h4>
 </div>
 

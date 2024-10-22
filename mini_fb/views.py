@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 import random
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import * 
 from .forms import *
 from typing import Any
@@ -38,9 +38,44 @@ class CreateStatusMessageView(CreateView):
         print(f'CreateStatusView.form_valid(): self.kwargs={self.kwargs}')
         profile = Profile.objects.get(pk=self.kwargs['pk'])
         form.instance.profile = profile
+        sm = form.save()
+        files = self.request.FILES.getlist('files')
+        print(files)
+        for file in files:
+            image = StatusMessageImage()
+            image.image_file = file
+            print("img file: ", file)
+            image.status_message = sm
+            print("status msg: ", sm)
+            image.save()
         return super().form_valid(form)
     
     def get_success_url(self) -> str:
         profile = Profile.objects.get(pk=self.kwargs['pk'])
         return reverse('profile', kwargs={'pk':profile.pk})
+    
+class UpdateProfileView(UpdateView):
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = "mini_fb/update_profile_form.html"
 
+class DeleteStatusMessageView(DeleteView):
+    model = StatusMessage
+    template_name = "mini_fb/delete_status_form.html"
+    context_object_name = "status_messages"
+
+    def get_success_url(self) -> str:
+        profile = self.object.profile
+
+        return reverse('profile', kwargs={'pk':profile.pk})
+    
+class UpdateStatusMessageView(UpdateView):
+    model = StatusMessage
+    form_class = UpdateStatusMessageForm
+    template_name = "mini_fb/update_status_form.html"
+    context_object_name = "status_messages"
+
+    def get_success_url(self) -> str:
+        profile = self.object.profile
+
+        return reverse('profile', kwargs={'pk':profile.pk})
