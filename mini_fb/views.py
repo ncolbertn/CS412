@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 import random
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import * 
 from .forms import *
 from typing import Any
@@ -78,4 +78,25 @@ class UpdateStatusMessageView(UpdateView):
     def get_success_url(self) -> str:
         profile = self.object.profile
 
-        return reverse('profile', kwargs={'pk':profile.pk})
+
+class CreateFriendView(View):
+    def dispatch(self, request, *args, **kwargs):
+        profile1pk = kwargs.get('pk')
+        otherpk = kwargs.get('other_pk')
+        profile = get_object_or_404(Profile, id=profile1pk)
+        other_profile = get_object_or_404(Profile, id=otherpk)
+        created = profile.add_friend(other_profile)
+        return redirect(reverse('profile', kwargs={'pk': profile1pk}))
+    
+class ShowFriendSuggestionsView(DetailView):
+    model = Profile
+    template_name = "mini_fb/friend_suggestions.html"
+    context_object_name = "profile"
+
+class ShowNewsFeedView(DetailView):
+    model = Profile
+    template_name = "mini_fb/news_feed.html"
+    context_onject_name = "profile"
+
+
+        

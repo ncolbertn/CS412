@@ -10,6 +10,38 @@
 <p>
     {{profile.email}}
 </p>
+
+<div>
+    {% if profile.get_friends %}
+        <h3>Friends</h3>
+        <main class="grid-container">
+            {% for f in profile.get_friends %}
+                <profile>
+                    <a href="{% url 'profile' f.pk %}"> <img src="{{f.pfp}}" alt="{{f.pfp}}" style="width: 100px;"> </a>
+                    <div> <a href="{% url 'profile' f.pk %}"> {{f.first_name}} {{f.surname}} </a></div>
+                </profile>
+
+            {% endfor %}
+        </main>
+        {% for f in profile.get_friends %}
+            
+        {% endfor %}
+    {% endif %}
+</div>
+<div>
+    <h4>
+        <a href="{% url 'friend_suggestions' profile.pk %}">
+            Suggested Friends
+        </a>
+    </h4>
+    <h4>
+        <a href="{% url 'news_feed' profile.pk %}">
+            News Feed
+        </a>
+    </h4>
+</div>
+
+
 <div>
     {% if profile.get_status_message %}
         <h3>Status Messages</h3>

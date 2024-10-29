@@ -35,6 +35,13 @@ header {
     margin: 20px auto;
 }
 
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%
+}
+
 profile.featured {
     grid-column: span 3;
     display: grid; /* nested grid */
