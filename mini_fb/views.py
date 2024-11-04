@@ -24,6 +24,7 @@ class ProfileView(DetailView):
     context_object_name = "profile"
 
 class CreateProfileView(CreateView):
+    '''Creates both a Profile object and a User object'''
     form_class = CreateProfileForm
     template_name = "mini_fb/create_profile_form.html"
 
@@ -66,6 +67,7 @@ class CreateProfileView(CreateView):
 
 
 class CreateStatusMessageView(LoginRequiredMixin, CreateView):
+    '''Create Status Message object'''
     form_class = CreateStatusMessageForm
     template_name = "mini_fb/create_status_form.html"
 
@@ -100,6 +102,7 @@ class CreateStatusMessageView(LoginRequiredMixin, CreateView):
         return reverse('profile', kwargs={'pk':profile.pk})
     
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    '''Update profile'''
     model = Profile
     form_class = UpdateProfileForm
     template_name = "mini_fb/update_profile_form.html"
@@ -114,6 +117,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
 
 class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
+    '''Delete Status Message'''
     model = StatusMessage
     template_name = "mini_fb/delete_status_form.html"
     context_object_name = "status_messages"
@@ -124,6 +128,7 @@ class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
         return reverse('profile', kwargs={'pk':profile.pk})
     
 class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
+    '''Update Status Message'''
     model = StatusMessage
     form_class = UpdateStatusMessageForm
     template_name = "mini_fb/update_status_form.html"
@@ -134,6 +139,7 @@ class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
 
 
 class CreateFriendView(LoginRequiredMixin, View):
+    '''Creates a friend relation between the logged in user and targeted pk other user'''
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         try:
@@ -146,6 +152,7 @@ class CreateFriendView(LoginRequiredMixin, View):
         return redirect(reverse('profile' , kwargs={'pk':profile.pk}))
     
 class ShowFriendSuggestionsView(LoginRequiredMixin, DetailView):
+    '''shows all users not yet friends of logged in User'''
     model = Profile
     template_name = "mini_fb/friend_suggestions.html"
     context_object_name = "profile"
@@ -159,6 +166,7 @@ class ShowFriendSuggestionsView(LoginRequiredMixin, DetailView):
         return profile
 
 class ShowNewsFeedView(LoginRequiredMixin, DetailView):
+    '''Show status messages of User and friends'''
     model = Profile
     template_name = "mini_fb/news_feed.html"
     context_onject_name = "profile"
