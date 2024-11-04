@@ -16,9 +16,26 @@
             </header>
         </div>
         <nav>
-            <ul>
-                <li><a href="{% url 'create_profile' %}"><h3>Create Profile</h3></a></li>
-            </ul>
+            <p>
+                {% if request.user.is_authenticated %}
+                {{request.user}} is logged in
+                <ul>
+                    <li><form action="{% url 'logout' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Logout">
+                    </form></li>
+                    {% with profile=user.profile_set.first %}
+                    <li><a href="{% url 'profile' profile.pk%}">My Profile</a></li>
+                    {% endwith %}
+                </ul>
+                {% else %}
+                <ul>
+                    <li><a href="{% url 'create_profile' %}"><h3>Create Profile</h3></a></li>
+                    <li><a href="{% url 'login' %}"> <h3>Login</h3></a></li>
+                </ul>
+                Not logged in 
+                {% endif %}
+            </p>
         </nav>
 
         {% block content %}

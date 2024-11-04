@@ -23,22 +23,23 @@
 
             {% endfor %}
         </main>
-        {% for f in profile.get_friends %}
-            
-        {% endfor %}
     {% endif %}
 </div>
 <div>
-    <h4>
-        <a href="{% url 'friend_suggestions' profile.pk %}">
-            Suggested Friends
-        </a>
-    </h4>
-    <h4>
-        <a href="{% url 'news_feed' profile.pk %}">
-            News Feed
-        </a>
-    </h4>
+    {% if request.user.is_authenticated %}
+        {% if request.user == profile.user %}
+            <h4>
+                <a href="{% url 'friend_suggestions' %}">
+                    Suggested Friends
+                </a>
+            </h4>
+            <h4>
+                <a href="{% url 'news_feed' %}">
+                    News Feed
+                </a>
+            </h4>
+        {% endif %}
+    {% endif %}
 </div>
 
 
@@ -59,26 +60,34 @@
                 <p>
                     {{s.timestamp}}
                 </p>
-                <div>
-                    <p>
-                        <a href="{% url 'delete_status' s.pk %}"> Delete</a>
-                        <a href="{% url 'update_status' s.pk %}"> Update</a>
-                    </p>
-                </div>
+                {% if request.user.is_authenticated %}
+                    {% if request.user == profile.user %}
+                        <div>
+                            <p>
+                                <a href="{% url 'delete_status' s.pk %}"> Delete</a>
+                                <a href="{% url 'update_status' s.pk %}"> Update</a>
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
         {% endfor %}
     {% endif %}
 </div>
-<div>
-    <h4>
-        <a href="{% url 'create_status' profile.pk %}">
-        Create a Status Message</a>
-    </h4>
-    <h4>
-        <a href="{% url 'update_profile' profile.pk %}">
-            Update this profile
-        </a>
-    </h4>
-</div>
+{% if request.user.is_authenticated %}
+    {% if request.user == profile.user %}
+        <div>
+            <h4>
+                <a href="{% url 'create_status' %}">
+                Create a Status Message</a>
+            </h4>
+            <h4>
+                <a href="{% url 'update_profile' %}">
+                    Update this profile
+                </a>
+            </h4>
+        </div>
+    {% endif %}
+{% endif %}
 
 {% endblock %}
