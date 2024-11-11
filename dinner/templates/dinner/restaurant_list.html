@@ -8,7 +8,7 @@
             {% for restaurant in restaurants %}
                 <li>
                     <strong>{{ restaurant.name }}</strong>
-                    <p>Distance: {{ restaurant.distance_from_me }} miles</p>
+                    <p>Distance: {{ restaurant.distance_from_me }} minutes</p>
                     <p>Cost: {{ restaurant.get_cost_range_display }}</p>
                 </li>
             {% endfor %}
