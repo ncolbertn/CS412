@@ -7,7 +7,7 @@
     {% if restaurant %}
         <div class="message">
             <p><strong>Name:</strong> {{ restaurant.name }}</p>
-            <p><strong>Distance:</strong> {{ restaurant.distance_from_me }} miles</p>
+            <p><strong>Distance:</strong> {{ restaurant.distance_from_me }} minutes away</p>
             <p><strong>Cost Range:</strong> {{ restaurant.get_cost_range_display }}</p>
         </div>
     {% else %}
