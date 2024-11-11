@@ -1,0 +1,23 @@
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+    <h1>Voter Data Graphs</h1>
+
+    <form method="get">
+        <fieldset>
+            <legend>Filter Voters</legend>
+            {{ form.as_p }}
+            <button type="submit">Filter</button>
+        </fieldset>
+    </form>
+
+    <h2>Distribution of Voters by Year of Birth</h2>
+    <div>{{ birth_year_histogram|safe }}</div>
+
+    <h2>Distribution of Voters by Party Affiliation</h2>
+    <div>{{ party_pie_chart|safe }}</div>
+
+    <h2>Voter Participation in Elections</h2>
+    <div>{{ election_participation_histogram|safe }}</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+    <h1>Registered Voters</h1>
+
+    <form method="get">
+        <fieldset>
+            <legend>Filter Voters</legend>
+            {{ form.as_p }}
+            <button type="submit">Search</button>
+        </fieldset>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Street Address</th>
+                <th>Date of Birth</th>
+                <th>Party Affiliation</th>
+                <th>Voter Score</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for voter in voters %}
+                <tr>
+                    <td>{{ voter.first_name }}</td>
+                    <td>{{ voter.last_name }}</td>
+                    <td>{{ voter.street_number }} {{ voter.street_name }}</td>
+                    <td>{{ voter.date_of_birth }}</td>
+                    <td>{{ voter.party_affiliation }}</td>
+                    <td>{{ voter.voter_score }}</td>
+                    <td><a href="{% url 'voter' voter.id %}">View Details</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?{% if form.data %}{{ form.data.urlencode }}&{% endif %}page=1">&laquo; first</a>
+                <a href="?{% if form.data %}{{ form.data.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?{% if form.data %}{{ form.data.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">next</a>
+                <a href="?{% if form.data %}{{ form.data.urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
