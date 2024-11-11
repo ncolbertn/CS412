@@ -1,0 +1,1 @@
+If youre in my repository for CS412 grading or smth ignore this, simple web app that helps my girlfriend and I decide wtf to eat for dinner. Figured seeing as this is hosted and django is already setup with all its extraneous packages its just easier to build an app here than make a new instance.

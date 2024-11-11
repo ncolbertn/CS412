@@ -1,0 +1,26 @@
+{% extends 'dinner/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Your Restaurant Suggestion</h2>
+
+    {% if restaurant %}
+        <div class="message">
+            <p><strong>Name:</strong> {{ restaurant.name }}</p>
+            <p><strong>Distance:</strong> {{ restaurant.distance_from_me }} miles</p>
+            <p><strong>Cost Range:</strong> {{ restaurant.get_cost_range_display }}</p>
+        </div>
+    {% else %}
+        <div class="message">
+            <p>No restaurants match your criteria.</p>
+        </div>
+    {% endif %}
+
+    <h3>Refine Your Search</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Find Another Restaurant</button>
+    </form>
+{% endblock %}
+

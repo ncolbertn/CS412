@@ -1,0 +1,11 @@
+<!-- templates/main_page.html -->
+{% extends 'dinner/base.html' %}
+
+{% block content %}
+  <h2>Find a Restaurant for Dinner</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Find Me a Restaurant</button>
+  </form>
+{% endblock %}

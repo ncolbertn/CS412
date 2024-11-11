@@ -1,0 +1,28 @@
+{% load static %}
+<html>
+    <head>
+        <title>Hungy ahh</title>
+        <link rel="stylesheet" href="https://cs-people.bu.edu/colbertn/dinnerstyles.css">
+         <!-- <link rel="stylesheet" href="{% static 'styles2.css' %}">  -->
+
+    </head>
+
+    <body>
+            <header>
+                <h1>Fuck am i eating for dinner?</h1>
+            </header>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'restaurant_add' %}">Add New Restaurant</a></li>
+                <li><a href="{% url 'restaurant_list' %}">List All</a></li>
+                <li><a href="{% url 'main_page' %}">Random</a></li>
+            </ul>
+        </nav>
+
+        {% block content %}
+
+        {% endblock %}
+        <hr>
+    </body>
+</html>
