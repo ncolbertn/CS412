@@ -1,0 +1,16 @@
+{% extends 'Library/base.html' %}
+
+{% block title %}Librarians{% endblock %}
+
+{% block content %}
+<h1>Librarians</h1>
+<ul>
+    {% for librarian in librarians %}
+    <li><a href="{% url 'librarian-detail' librarian.pk %}">{{ librarian.first_name }} {{ librarian.last_name }}</a></li>
+    {% endfor %}
+</ul>
+
+{% if user.is_staff %}
+    <p><a href="{% url 'librarian-dashboard' %}">Librarian Dashboard</a></p>
+{% endif %}
+{% endblock %}

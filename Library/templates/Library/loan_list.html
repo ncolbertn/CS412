@@ -1,0 +1,18 @@
+{% extends 'Library/base.html' %}
+{% block content %}
+<h1>Loans</h1>
+<ul>
+    {% for loan in loans %}
+    <li>
+        <a href="{% url 'loan-detail' loan.pk %}">
+        Book: {{ loan.book.title }}  
+        Borrowed by: {{ loan.patron.first_name }} {{ loan.patron.last_name }}  
+        Loan Date: {{ loan.loan_date }}  
+        Due Date: {{ loan.due_date }}
+        </a>
+    </li>
+    {% empty %}
+    <li>No loans found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

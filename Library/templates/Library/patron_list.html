@@ -1,0 +1,12 @@
+{% extends 'Library/base.html' %}
+
+{% block title %}Patrons{% endblock %}
+
+{% block content %}
+<h1>Patrons</h1>
+<ul>
+    {% for patron in patrons %}
+    <li><a href="{% url 'patron-detail' patron.pk %}">{{ patron.first_name }} {{ patron.last_name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

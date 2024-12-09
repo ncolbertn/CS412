@@ -1,0 +1,24 @@
+{% extends 'Library/base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+<p><strong>Author:</strong> <a href="{% url 'author-detail' book.author.pk %}">{{ book.author.first_name }} {{ book.author.last_name }}</a></p>
+<p><strong>Publication Date:</strong> {{ book.publication_date }}</p>
+<p><strong>Pages:</strong> {{ book.number_of_pages }}</p>
+<p><strong>Language:</strong> {{ book.language }}</p>
+<p><strong>Description:</strong> {{ book.description }}</p>
+{% if book.cover_image %}
+<p><img src="{{ book.cover_image}}" alt="{{ book.title }}" /></p>
+{% endif %}
+
+{% if user.is_authenticated and not user.is_staff %}
+    <p><a href="{% url 'borrow-book' book.pk %}">Borrow this book</a></p>
+{% endif %}
+{% if user.is_staff %}
+    <p><a href="{% url 'book-delete' book.pk %}">Delete this book</a></p>
+{% endif %}
+
+<a href="{% url 'book-list' %}">Back to Books</a>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'Library/base.html' %}
+{% block content %}
+<h1>Loan #{{ loan.pk }}</h1>
+<p><strong>Book:</strong> <a href="{% url 'book-detail' loan.book.pk %}">{{ loan.book.title }}</a></p>
+<p><strong>Patron:</strong> <a href="{% url 'patron-detail' loan.patron.pk %}">{{ loan.patron.first_name }} {{ loan.patron.last_name }}</a></p>
+<p><strong>Loan Date:</strong> {{ loan.loan_date }}</p>
+<p><strong>Due Date:</strong> {{ loan.due_date }}</p>
+{% if loan.return_date %}
+<p><strong>Return Date:</strong> {{ loan.return_date }}</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+<form action="{% url 'return-loan' loan.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Return Book</button>
+</form>
+{% endif %}
+
+<a href="{% url 'loan-list' %}">Back to Loans</a>
+{% endblock %}

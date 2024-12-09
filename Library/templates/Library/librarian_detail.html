@@ -1,0 +1,10 @@
+{% extends 'Library/base.html' %}
+
+{% block title %}{{ librarian.first_name }} {{ librarian.last_name }}{% endblock %}
+
+{% block content %}
+<h1>{{ librarian.first_name }} {{ librarian.last_name }}</h1>
+<p><strong>Email:</strong> {{ librarian.email }}</p>
+
+<a href="{% url 'librarian-list' %}">Back to Librarians</a>
+{% endblock %}

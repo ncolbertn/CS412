@@ -1,0 +1,10 @@
+{% extends 'Library/base.html' %}
+{% block content %}
+<h1>Edit Patron Information</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+</form>
+<a href="{% url 'patron-detail' user.patron_profile.pk %}">Cancel</a>
+{% endblock %}

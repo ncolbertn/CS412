@@ -1,0 +1,26 @@
+{% extends 'Library/base.html' %}
+{% block content %}
+<h1>Search Books</h1>
+<form method="get">
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+{% if books %}
+    <h2>Results:</h2>
+    <div class="book-grid">
+        {% for book in books %}
+        <div class="book-item">
+            <a href="{% url 'book-detail' book.pk %}">
+                {% if book.cover_image %}
+                    <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="book-cover">
+                {% else %}
+                    <div class="book-cover-placeholder">No Cover</div>
+                {% endif %}
+                <div class="book-title">{{ book.title }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

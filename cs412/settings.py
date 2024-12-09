@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'mini_fb',
     'voter_analytics',
     'dinner',
+    'Library',
 ]
 
 MIDDLEWARE = [

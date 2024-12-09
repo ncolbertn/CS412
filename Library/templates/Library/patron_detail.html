@@ -1,0 +1,22 @@
+{% extends 'Library/base.html' %}
+
+{% block title %}{{ patron.first_name }} {{ patron.last_name }}{% endblock %}
+
+{% block content %}
+<h1>{{ patron.first_name }} {{ patron.last_name }}</h1>
+<p><strong>Address:</strong> {{ patron.address }}</p>
+<p><strong>Email:</strong> {{ patron.email }}</p>
+<p><strong>Phone Number:</strong> {{ patron.phone_number }}</p>
+<p><strong>Library Card Number:</strong> {{ patron.library_card_number }}</p>
+<p><strong>Date of Birth:</strong> {{ patron.date_of_birth }}</p>
+
+{% if request.user.is_authenticated %}
+    {% if request.user == patron.user %}
+        <a href="{% url 'patron-edit' patron.pk %}">Update Info</a>
+    {% endif %}
+{% endif %}
+
+{% if request.user.is_staff %}
+    <a href="{% url 'patron-list' %}">Back to Patrons</a>
+{% endif %}
+{% endblock %}
