@@ -13,9 +13,11 @@
 <p><img src="{{ book.cover_image}}" alt="{{ book.title }}" /></p>
 {% endif %}
 
+<!-- We don't want librarians borrowing books -->
 {% if user.is_authenticated and not user.is_staff %}
     <p><a href="{% url 'borrow-book' book.pk %}">Borrow this book</a></p>
 {% endif %}
+<!-- We do want them able to delete a book -->
 {% if user.is_staff %}
     <p><a href="{% url 'book-delete' book.pk %}">Delete this book</a></p>
 {% endif %}

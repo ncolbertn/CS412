@@ -3,7 +3,29 @@
 <h1>Add a New Book</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    
+    <!-- Display both the add book form and the new author form -->
+
+    <p>{{ form.title.label_tag }}<br>{{ form.title }}</p>
+    <p>{{ form.isbn.label_tag }}<br>{{ form.isbn }}</p>
+    <p>{{ form.publication_date.label_tag }}<br>{{ form.publication_date }}</p>
+    <p>{{ form.number_of_pages.label_tag }}<br>{{ form.number_of_pages }}</p>
+    <p>{{ form.language.label_tag }}<br>{{ form.language }}</p>
+    <p>{{ form.cover_image.label_tag }}<br>{{ form.cover_image }}</p>
+    <p>{{ form.description.label_tag }}<br>{{ form.description }}</p>
+    <p>{{ form.publisher.label_tag }}<br>{{ form.publisher }}</p>
+
+    <hr>
+    <h2>Author</h2>
+    <p>{{ form.existing_author.label_tag }}<br>{{ form.existing_author }}</p>
+    <strong>OR</strong>
+    <p>{{ form.new_author_first_name.label_tag }}<br>{{ form.new_author_first_name }}</p>
+    <p>{{ form.new_author_last_name.label_tag }}<br>{{ form.new_author_last_name }}</p>
+    <p>{{ form.new_author_biography.label_tag }}<br>{{ form.new_author_biography }}</p>
+    <p>{{ form.new_author_date_of_birth.label_tag }}<br>{{ form.new_author_date_of_birth }}</p>
+    <p>{{ form.new_author_date_of_death.label_tag }}<br>{{ form.new_author_date_of_death }}</p>
+
     <button type="submit">Add Book</button>
 </form>
 {% endblock %}

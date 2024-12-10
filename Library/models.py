@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Patron(models.Model):
+    ''' The Patron model encapsualtes a library card holding member '''
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='patron_profile')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -15,6 +16,7 @@ class Patron(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 class Librarian(models.Model):
+    ''' Similar to Patron, Librarian is another type of User '''
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='librarian_profile')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -24,6 +26,7 @@ class Librarian(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 class Author(models.Model):
+    ''' An author model will have some quantity of books attributed to them '''
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     biography = models.TextField()
@@ -35,6 +38,7 @@ class Author(models.Model):
 
 
 class Book(models.Model):
+    ''' Encapsulates a book, connected by foreign key to an Author '''
     title = models.CharField(max_length=200)
     isbn = models.CharField(max_length=13)
     publication_date = models.DateField()
@@ -48,6 +52,7 @@ class Book(models.Model):
         return self.title
 
 class Loan(models.Model):
+    ''' A Loan object ties a certain Book to a Patron for some amount of time'''
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     patron = models.ForeignKey(Patron, on_delete=models.CASCADE)
     loan_date = models.DateField()

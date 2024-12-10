@@ -13,50 +13,60 @@ from .forms import PatronSignupForm, BookSearchForm, BookForm, BorrowForm, Patro
 from django.db.models import Q
 
 class PatronListView(ListView):
+    ''' Gets all Patron models and lists them '''
     model = Patron
     template_name = 'Library/patron_list.html'
     context_object_name = 'patrons'
 
 class PatronDetailView(DetailView):
+    ''' Generic Detail view for the Patron model '''
     model = Patron
     template_name = 'Library/patron_detail.html'
     context_object_name = 'patron'
 
 
 class LibrarianListView(ListView):
+    ''' Generic List View for the Librarian model '''
     model = Librarian
     template_name = 'Library/librarian_list.html'
     context_object_name = 'librarians'
 
 class LibrarianDetailView(DetailView):
+    ''' Generic Detail View for the Librarian Model '''
     model = Librarian
     template_name = 'Library/librarian_detail.html'
     context_object_name = 'librarian'
 
 
 class AuthorListView(ListView):
+    ''' Generic List View for the Author model '''
     model = Author
     template_name = 'Library/author_list.html'
     context_object_name = 'authors'
 
 class AuthorDetailView(DetailView):
+    ''' Generic detail view for the Author model '''
     model = Author
     template_name = 'Library/author_detail.html'
     context_object_name = 'author'
 
 
 class BookListView(ListView):
+    ''' Generic list view for the Book model '''
     model = Book
     template_name = 'Library/book_list.html'
     context_object_name = 'books'
 
 class BookDetailView(DetailView):
+    ''' Generic detail view for the Book model '''
     model = Book
     template_name = 'Library/book_detail.html'
     context_object_name = 'book'
 
 
 class LoanListView(ListView):
+    ''' Lists all loans related to user. If the user is a librarian,
+        they will see all Loan objects for all users'''
     model = Loan
     template_name = 'Library/loan_list.html'
     context_object_name = 'loans'
@@ -72,6 +82,7 @@ class LoanListView(ListView):
             return queryset.filter(patron__user=user)
 
 class LoanDetailView(DetailView):
+    ''' Show loan info '''
     model = Loan
     template_name = 'Library/loan_detail.html'
     context_object_name = 'loan'
@@ -79,6 +90,8 @@ class LoanDetailView(DetailView):
 
 
 def signup_view(request):
+    ''' Function view for registering a new 
+        Patron and User object. '''
     if request.method == 'POST':
         form = PatronSignupForm(request.POST)
         if form.is_valid():
@@ -91,13 +104,14 @@ def signup_view(request):
 
 
 def book_search_view(request):
+    ''' Function to parse search results '''
     form = BookSearchForm(request.GET or None)
     books = []
 
     if form.is_valid():
         query = form.cleaned_data.get('query', '').strip()
         if query:
-            # Use Q objects to filter by book title or author name
+            # filter by book title or author name
             books = Book.objects.filter(
                 Q(title__icontains=query) |
                 Q(author__first_name__icontains=query) |
@@ -116,12 +130,10 @@ def book_search_view(request):
 @login_required
 def borrow_book_view(request, pk):
     # Ensure the user is a patron
-    # This assumes your Patron model is linked to User (e.g. patron.user == request.user)
     patron = get_object_or_404(Patron, user=request.user)
     book = get_object_or_404(Book, pk=pk)
 
-    # Check if the book is currently available
-    # For simplicity, let's assume if it doesn't appear in a Loan without a return_date, it's available
+    # Check if the book is currently available/not in a loan object
     on_loan = Loan.objects.filter(book=book, return_date__isnull=True).exists()
     if on_loan:
         # The book is not available
@@ -132,7 +144,7 @@ def borrow_book_view(request, pk):
         if form.is_valid():
             # Create a new loan
             loan_date = timezone.now().date()
-            due_date = loan_date + timedelta(days=14)  # for example, 2-week loan period
+            due_date = loan_date + timedelta(days=14)  # loan period of two weeks, maybe longer?
             Loan.objects.create(book=book, patron=patron, loan_date=loan_date, due_date=due_date)
             return redirect('loan-list')
     else:
@@ -147,34 +159,56 @@ def is_librarian(user):
 
 @user_passes_test(is_librarian)
 def librarian_dashboard(request):
+    ''' The librarian dashboard facilitates back-end functions '''
     return render(request, 'Library/librarian_dashboard.html')
 
 
 class BookCreateView(CreateView):
+    ''' Creates a new book object '''
     model = Book
     form_class = BookForm
     template_name = 'Library/book_form.html'
     success_url = reverse_lazy('book-list')
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_staff:
-            return redirect('index')
-        return super().dispatch(request, *args, **kwargs)
+    def form_valid(self, form):
+        existing_author = form.cleaned_data.get('existing_author')
+        new_author_first_name = form.cleaned_data.get('new_author_first_name')
+        new_author_last_name = form.cleaned_data.get('new_author_last_name')
+        new_author_biography = form.cleaned_data.get('new_author_biography')
+        new_author_date_of_birth = form.cleaned_data.get('new_author_date_of_birth')
+        new_author_date_of_death = form.cleaned_data.get('new_author_date_of_death')
+
+        # If no existing author chosen, create a new one
+        if not existing_author:
+            new_author = Author.objects.create(
+                first_name=new_author_first_name,
+                last_name=new_author_last_name,
+                biography=new_author_biography or "",
+                date_of_birth=new_author_date_of_birth,
+                date_of_death=new_author_date_of_death
+            )
+            form.instance.author = new_author
+        else:
+            form.instance.author = existing_author
+
+        return super().form_valid(form)
 
 
 class BookDeleteView(DeleteView):
+    ''' deletes a Book object '''
     model = Book
     template_name = 'Library/book_confirm_delete.html'
     success_url = reverse_lazy('book-list')
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_staff:
+        if not request.user.is_staff:   # Only librarians can delete books!
             return redirect('index')
         return super().dispatch(request, *args, **kwargs)
 
 
 @login_required
 def return_loan_view(request, pk):
+    ''' view to return loan, can be accessed by either librarian or patron of the loan '''
     loan = get_object_or_404(Loan, pk=pk)
     # Permission check: either staff or the patron who borrowed the book
     if not (request.user.is_staff or loan.patron.user == request.user):
@@ -186,10 +220,8 @@ def return_loan_view(request, pk):
     # Redirect back to the loan list after returning
     return redirect('loan-list')
 
-def is_librarian(user):
-    return user.is_staff
-
 class PatronUpdateView(UpdateView):
+    '''Update patron info'''
     model = Patron
     form_class = PatronUpdateForm
     template_name = 'Library/patron_update.html'

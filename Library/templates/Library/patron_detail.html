@@ -12,11 +12,13 @@
 
 {% if request.user.is_authenticated %}
     {% if request.user == patron.user %}
+    <!-- Only allow editing if the viewer is the patron -->
         <a href="{% url 'patron-edit' patron.pk %}">Update Info</a>
     {% endif %}
 {% endif %}
 
 {% if request.user.is_staff %}
+    <!-- Returns librarians to their list of all patrons -->
     <a href="{% url 'patron-list' %}">Back to Patrons</a>
 {% endif %}
 {% endblock %}

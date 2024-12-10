@@ -9,13 +9,20 @@
 {% endif %}
 
 <h2>Books by {{ author.first_name }} {{ author.last_name }}</h2>
-<ul>
+<div class="book-grid">
     {% for book in author.book_set.all %}
-    <li><a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a></li>
-    {% empty %}
-    <li>No books available by this author.</li>
+    <div class="book-item">
+        <a href="{% url 'book-detail' book.pk %}">
+            {% if book.cover_image %}
+                <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="book-cover">
+            {% else %}
+                <div class="book-cover-placeholder">No Cover</div>
+            {% endif %}
+            <div class="book-title">{{ book.title }}</div>
+        </a>
+    </div>
     {% endfor %}
-</ul>
+</div>
 
 <a href="{% url 'author-list' %}">Back to Authors</a>
 {% endblock %}

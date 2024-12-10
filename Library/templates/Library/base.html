@@ -13,22 +13,28 @@
             <li><a href="{% url 'book-search' %}" class="nav-link">Search</a></li>
             <li><a href="{% url 'author-list' %}" class="nav-link">Authors</a></li>
             <li><a href="{% url 'book-list' %}" class="nav-link">Books</a></li>
+
+            <!-- Only accessible as librarian -->
             {% if user.is_staff %}
-            <li><a href="{% url 'patron-list' %}" class="nav-link">Patrons</a></li>
             <li><a href="{% url 'librarian-dashboard' %}" class="nav-link">Librarian Dashboard</a></li>
             {% endif %}
 
+            <!-- Shows when logged in -->
             {% if user.is_authenticated %}
             <li><a href="{% url 'loan-list' %}" class="nav-link">Loans</a></li>
             <form action="{% url 'logout' %}" method="POST" class="nav-form" style="display:inline;">
                 {% csrf_token %}
                 <li><button type="submit" class="nav-link-button">Logout</button></li>
             </form>
+
+            <!-- If logged in as Patron, allow a link to their DetailView, as Librarian just display name -->
             {% if user.is_staff %}
                 <li>Logged in as: {{ user.username }}</li>
             {% else %}
                 <li><a href="{% url 'patron-detail' user.patron_profile.pk %}" class="nav-link">Logged in as: {{ user.username }}</a></li>
             {% endif %}
+
+            <!-- If not logged in, show login options -->
             {% else %}
                 <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
                 <li><a href="{% url 'signup' %}" class="nav-link">Sign Up</a></li>
